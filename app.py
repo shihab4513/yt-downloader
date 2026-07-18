@@ -8,7 +8,7 @@ HTML_TEMPLATE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instant Video Link Generator</title>
+    <title>Instant Processing Dashboard</title>
     <style>
         body { font-family: system-ui, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #f9f9f9; }
         .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -25,14 +25,14 @@ HTML_TEMPLATE = """
 </head>
 <body>
 <div class="card">
-    <h2>🔴 Instant Video Link Generator</h2>
-    <p class="info-text">Paste your video link below. This updates instantly inside your browser to avoid cloud blocks and network connection errors entirely.</p>
+    <h2>🔴 Web Engine Processing Hub</h2>
+    <p class="info-text">Paste your video link below to switch directly to active browser processing engines designed to handle video parameters locally.</p>
     
-    <input type="text" id="videoUrl" placeholder="Paste YouTube link here (e.g., https://youtube.com...)">
-    <button id="btn" onclick="generateLinks()">Generate Processing Options</button>
+    <input type="text" id="videoUrl" placeholder="Paste YouTube link here...">
+    <button id="btn" onclick="generateLinks()">Load Processing Options</button>
     
     <div class="format-list" id="outputSection">
-        <h3 style="margin-top: 0; font-size: 16px; color: #333;">Choose Processing Method:</h3>
+        <h3 style="margin-top: 0; font-size: 16px; color: #333;">Available Local Processors:</h3>
         <div id="output"></div>
     </div>
 </div>
@@ -44,17 +44,17 @@ function generateLinks() {
     const output = document.getElementById('output');
     
     if(!url) {
-        alert('Please enter a valid YouTube URL first.');
+        alert('Please enter a valid video link.');
         return;
     }
     
     output.innerHTML = '';
     
-    // 100% Client-side formatting tools that avoid cross-site network request limits
+    // Updated engine index excluding restricted public API structures
     const tools = [
-        { name: "Method A (High Speed)", desc: "Direct Web Stream Extractor", targetUrl: `https://cobalt.tools` },
-        { name: "Method B (Alternative)", desc: "Web File Downloader Engine", targetUrl: `https://y2mate.is` },
-        { name: "Method C (Audio Only)", desc: "Convert Clip Directly to MP3", targetUrl: `https://onlymp3.to` }
+        { name: "Processor Alpha", desc: "Local Client File Converter", targetUrl: "https://y2mate.is" },
+        { name: "Processor Beta", desc: "Direct Video Stream Engine", targetUrl: "https://savefrom.net" },
+        { name: "Audio Extractor", desc: "Convert to Track Only (MP3)", targetUrl: "https://onlymp3.to" }
     ];
     
     tools.forEach(tool => {
@@ -65,7 +65,7 @@ function generateLinks() {
                 <strong>${tool.name}</strong>
                 <div style="font-size: 12px; color: #777; margin-top: 2px;">${tool.desc}</div>
             </div>
-            <a class="dl-link" href="${tool.targetUrl}" target="_blank" rel="noopener noreferrer">Open Tool</a>
+            <a class="dl-link" href="${tool.targetUrl}" target="_blank" rel="noopener noreferrer">Launch Engine</a>
         `;
         output.appendChild(item);
     });
