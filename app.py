@@ -3,7 +3,6 @@ import yt_dlp
 
 app = Flask(__name__)
 
-# Single-file layout: This serves the HTML frontend
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -83,9 +82,16 @@ def get_formats():
     if not video_url:
         return jsonify({"error": "No URL provided"}), 400
         
+    # Modified extractor options using web client emulation flags to stop bot walls
     ydl_opts = {
         'skip_download': True,
-        'quiet': True
+        'quiet': True,
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['web_creator', 'ios'], # Emulate creator tools or iOS apps to skip bot checks
+                'skip': ['dash', 'hls']
+            }
+        }
     }
     
     try:
@@ -93,19 +99,21 @@ def get_formats():
             info = ydl.extract_info(video_url, download=False)
             formats_list = []
             
-            # Filter and grab formats that contain both video and audio together
             for f in info.get('formats', []):
+                # Grab progressive streams containing both audio and video
                 if f.get('vcodec') != 'none' and f.get('acodec') != 'none' and f.get('url'):
                     formats_list.append({
-                        "resolution": f.get('format_note', 'Unknown'),
+                        "resolution": f.get('format_note', 'Standard Quality'),
                         "ext": f.get('ext', 'mp4'),
-                        "url": f.get('url') # This is the raw direct download link
+                        "url": f.get('url')
                     })
             
-            # Reverse so highest resolution appears first
+            if not formats_list:
+                return jsonify({"error": "No directly streams available. Try another video link."}), 404
+                
             return jsonify({"formats": formats_list[::-1]})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "YouTube Bot-Block active. Let's fix it: " + str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
